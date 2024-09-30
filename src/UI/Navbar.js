@@ -1,8 +1,8 @@
 
 export const Navbar = () => {
   return (
-    <div className="bg-slate-800 w-full p-2 text-3xl text-white">
-      Flash Cards
+    <div className="bg-slate-900 w-full p-4 pt-6 text-3xl text-white">
+      Letter Recognition
     </div>
   )
 }
