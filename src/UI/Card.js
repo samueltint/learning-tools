@@ -1,7 +1,10 @@
-import { useState } from "react";
-
-export const Card = ({ correct, symbol }) => {
-  const [selected, setSelected] = useState(false);
+export const Card = ({
+  correct,
+  symbol,
+  selected,
+  setSelected,
+  handleCorrect,
+}) => {
   const colorVariants = {
     unselected: "bg-slate-800",
     correct: "bg-green-500",
@@ -9,18 +12,25 @@ export const Card = ({ correct, symbol }) => {
   };
 
   const handleClick = () => {
-    setSelected((clicked) => !clicked);
+    if (selected === symbol) {
+      setSelected(null);
+    } else {
+      setSelected(symbol);
+    }
+    if (correct === symbol) {
+      handleCorrect();
+    }
   };
 
   return (
     <div
       className={`grid ${
-        selected
-          ? correct
+        selected === symbol
+          ? correct === symbol
             ? colorVariants.correct
             : colorVariants.incorrect
           : colorVariants.unselected
-      } aspect-square p-8 place-content-center text-5xl text-white rounded-lg transition-all`}
+      } aspect-square p-8 place-content-center text-5xl text-white rounded-lg transition-all hover`}
       onClick={handleClick}
     >
       {symbol.character}
