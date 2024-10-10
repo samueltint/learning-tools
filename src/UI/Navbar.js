@@ -1,8 +1,7 @@
-
 export const Navbar = () => {
   return (
-    <div className="bg-slate-900 w-full p-4 pt-6 text-3xl text-white">
-      Letter Recognition
+    <div className="bg-slate-900 w-full text-3xl text-white flex">
+      <div className="flex-1 p-4 leading-snug">Letter Recognition</div>
     </div>
-  )
-}
+  );
+};

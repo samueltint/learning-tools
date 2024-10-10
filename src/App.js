@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { alphabet } from "./sets";
+import { useEffect, useState } from "react";
+import { alphabet, numbers } from "./lists";
 import { Card } from "./UI/Card";
 import { Navbar } from "./UI/Navbar";
 import { Play, Volume2 } from "lucide-react";
@@ -7,17 +7,31 @@ import { Play, Volume2 } from "lucide-react";
 function App() {
   const correctMessages = ["Good job", "Nice!", "Correct!"];
 
-  const [message, setMessage] = useState("What letter is this?");
+  const [started, setStarted] = useState(false);
+  const [list, setList] = useState(alphabet);
+  const [message, setMessage] = useState("Start");
 
   const [correct, setCorrect] = useState(
-    alphabet[Math.floor(Math.random() * alphabet.length)]
+    list[Math.floor(Math.random() * list.length)]
   );
 
   const [selected, setSelected] = useState();
 
+  useEffect(() => {
+    if (correct && started) {
+      const audio = new Audio(correct.url);
+      audio.play();
+    }
+  }, [correct]);
+
   const handlePlay = () => {
+    if (!started) {
+      setStarted(true);
+      setMessage("What letter is this?");
+
+    }
     if (selected === correct) {
-      setCorrect(alphabet[Math.floor(Math.random() * alphabet.length)]);
+      setCorrect(list[Math.floor(Math.random() * list.length)]);
       setSelected();
       setMessage("What letter is this?");
     } else {
@@ -36,7 +50,7 @@ function App() {
 
   return (
     <div className="bg-slate-700 font-comfortaa h-screen">
-      <Navbar />
+      <Navbar setList={setList}/>
       <div className="flex flex-col items-stretch gap-4 p-4">
         <div className="text-center text-white text-4xl p-3">{message}</div>
         <div className="grid place-items-center w-full">
@@ -52,7 +66,7 @@ function App() {
           </div>
         </div>
         <div className={`grid grid-cols-12 gap-4`}>
-          {alphabet.map((symbol) => {
+          {list.map((symbol) => {
             return (
               <Card
                 key={symbol.character}
