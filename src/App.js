@@ -100,13 +100,13 @@ function App() {
   };
 
   return (
-    <div className="bg-slate-700 font-comfortaa h-screen">
+    <div className="bg-slate-700 font-comfortaa h-screen overflow-none">
       <Navbar
         selectedList={selectedList}
         setSelectedList={setSelectedList}
         setAmount={setAmount}
       />
-      <div className="flex flex-col items-stretch gap-4 p-4">
+      <div className="flex flex-col bg-slate-700 items-stretch gap-4 p-4 overflow-auto">
         <div className="text-center text-white text-4xl p-3">{message}</div>
         <div className="grid place-items-center w-full">
           <div

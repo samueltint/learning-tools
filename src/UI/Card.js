@@ -30,7 +30,7 @@ export const Card = ({
             ? colorVariants.correct
             : colorVariants.incorrect
           : colorVariants.unselected
-      } aspect-square p-8 text-5xl text-white rounded-lg transition-all hover`}
+      } aspect-square p-4 sm:p-8 text-3xl sm:text-5xl text-white rounded-lg transition-all hover`}
       onClick={handleClick}
     >
       <div className="aspect-square text-center">{symbol.character}</div>
