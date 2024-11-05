@@ -10,15 +10,15 @@ function App() {
   const [selectedList, setSelectedList] = useState("alphabet");
   const [amount, setAmount] = useState("full set");
 
-  const [started, setStarted] = useState(false);
+  let audio;
   const [list, setList] = useState(alphabet);
   const [message, setMessage] = useState("Start");
 
+  const [started, setStarted] = useState(false);
+  const [selected, setSelected] = useState();
   const [correct, setCorrect] = useState(
     list[Math.floor(Math.random() * list.length)]
   );
-
-  const [selected, setSelected] = useState();
 
   useEffect(() => {
     refreshList();
@@ -26,8 +26,7 @@ function App() {
 
   useEffect(() => {
     if (correct && started) {
-      const audio = new Audio(correct.sound);
-      audio.play();
+      playAudio();
     }
   }, [correct]);
 
@@ -42,8 +41,7 @@ function App() {
       setMessage("What letter is this?");
     } else {
       setTimeout(() => {
-        const audio = new Audio(correct.sound);
-        audio.play();
+        playAudio();
       }, 100);
     }
   };
@@ -60,34 +58,35 @@ function App() {
     let newList = [];
     switch (selectedList) {
       case "alphabet":
-        console.log("alphabet")
+        console.log("alphabet");
         newList = [...alphabet];
         break;
       case "numbers":
-        console.log("numbers")
+        console.log("numbers");
         newList = [...numbers];
         break;
       default:
-        console.log("list default")
+        console.log("list default");
         break;
     }
 
     switch (amount) {
       case "5":
-        console.log("5")
+        console.log("5");
         newList = randomiseList(newList).slice(0, 5);
         break;
       case "10":
-        console.log("10")
+        console.log("10");
         newList = randomiseList(newList).slice(0, 10);
         break;
       default:
-        console.log("amount default")
+        console.log("amount default");
         break;
     }
 
     setList(newList);
-    setCorrect(newList[Math.floor(Math.random() * newList.length)]);
+    const filteredList = newList.filter(letter => letter !== correct)
+    setCorrect(filteredList[Math.floor(Math.random() * filteredList.length)]);
   };
 
   const randomiseList = (set) => {
@@ -97,6 +96,11 @@ function App() {
       [setCopy[i], setCopy[j]] = [setCopy[j], setCopy[i]];
     }
     return setCopy;
+  };
+
+  const playAudio = () => {
+    audio = new Audio(correct.sound);
+    audio.play();
   };
 
   return (
