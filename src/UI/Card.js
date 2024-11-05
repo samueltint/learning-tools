@@ -30,10 +30,10 @@ export const Card = ({
             ? colorVariants.correct
             : colorVariants.incorrect
           : colorVariants.unselected
-      } aspect-square p-8 place-content-center text-5xl text-white rounded-lg transition-all hover`}
+      } aspect-square p-8 text-5xl text-white rounded-lg transition-all hover`}
       onClick={handleClick}
     >
-      {symbol.character}
+      <div className="aspect-square text-center">{symbol.character}</div>
     </div>
   );
 };

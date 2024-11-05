@@ -9,6 +9,7 @@ function App() {
 
   const [started, setStarted] = useState(false);
   const [list, setList] = useState(alphabet);
+  const [amount, setAmount] = useState(alphabet.length);
   const [message, setMessage] = useState("Start");
 
   const [correct, setCorrect] = useState(
@@ -18,8 +19,12 @@ function App() {
   const [selected, setSelected] = useState();
 
   useEffect(() => {
+    
+  }, [amount, list])
+
+  useEffect(() => {
     if (correct && started) {
-      const audio = new Audio(correct.url);
+      const audio = new Audio(correct.sound);
       audio.play();
     }
   }, [correct]);
@@ -36,7 +41,7 @@ function App() {
       setMessage("What letter is this?");
     } else {
       setTimeout(() => {
-        const audio = new Audio(correct.url);
+        const audio = new Audio(correct.sound);
         audio.play();
       }, 100);
     }
@@ -50,7 +55,7 @@ function App() {
 
   return (
     <div className="bg-slate-700 font-comfortaa h-screen">
-      <Navbar setList={setList}/>
+      <Navbar list={list} setList={setList} setAmount={setAmount}/>
       <div className="flex flex-col items-stretch gap-4 p-4">
         <div className="text-center text-white text-4xl p-3">{message}</div>
         <div className="grid place-items-center w-full">
@@ -65,7 +70,7 @@ function App() {
             )}
           </div>
         </div>
-        <div className={`grid grid-cols-12 gap-4`}>
+        <div className={`flex flex-wrap gap-4 justify-center`}>
           {list.map((symbol) => {
             return (
               <Card
