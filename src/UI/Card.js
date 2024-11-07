@@ -4,6 +4,9 @@ export const Card = ({
   selected,
   setSelected,
   handleCorrect,
+  setAttemptNumber,
+  questionAttempted,
+  setQuestionAttempted,
 }) => {
   const colorVariants = {
     unselected: "bg-slate-800",
@@ -12,6 +15,11 @@ export const Card = ({
   };
 
   const handleClick = () => {
+    console.log(questionAttempted)
+    if (!questionAttempted) {
+      setQuestionAttempted(true)
+      setAttemptNumber((prev) => prev + 1);
+    }
     if (selected === symbol) {
       setSelected(null);
     } else {

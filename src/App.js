@@ -10,6 +10,10 @@ function App() {
   const [selectedList, setSelectedList] = useState("alphabet");
   const [amount, setAmount] = useState("full set");
 
+  const [attemptNumber, setAttemptNumber] = useState(0);
+  const [correctNumber, setCorrectNumber] = useState(0);
+  const [questionAttempted, setQuestionAttempted] = useState(false);
+
   let audio;
   const [list, setList] = useState(alphabet);
   const [message, setMessage] = useState("Start");
@@ -38,6 +42,7 @@ function App() {
     if (selected === correct) {
       refreshList();
       setSelected();
+      setQuestionAttempted(false);
       setMessage("What letter is this?");
     } else {
       setTimeout(() => {
@@ -47,9 +52,12 @@ function App() {
   };
 
   const handleCorrect = () => {
-    setMessage(
-      correctMessages[Math.floor(Math.random() * correctMessages.length)]
-    );
+    if (!questionAttempted) {
+      setCorrectNumber((prev) => prev + 1);
+      setMessage(
+        correctMessages[Math.floor(Math.random() * correctMessages.length)]
+      );
+    }
   };
 
   const refreshList = () => {
@@ -85,7 +93,7 @@ function App() {
     }
 
     setList(newList);
-    const filteredList = newList.filter(letter => letter !== correct)
+    const filteredList = newList.filter((letter) => letter !== correct);
     setCorrect(filteredList[Math.floor(Math.random() * filteredList.length)]);
   };
 
@@ -112,7 +120,8 @@ function App() {
       />
       <div className="flex flex-col bg-slate-700 items-stretch gap-4 p-4 overflow-auto">
         <div className="text-center text-white text-4xl p-3">{message}</div>
-        <div className="grid place-items-center w-full">
+        <div className="flex w-full items-center gap-4">
+          <div className="flex-1" />
           <div
             className="bg-slate-800 grid place-items-center aspect-square h-24 rounded-full hover:opacity-80 transition-all"
             onClick={handlePlay}
@@ -122,6 +131,10 @@ function App() {
             ) : (
               <Volume2 className="stroke-white w-full h-full p-6" />
             )}
+          </div>
+          {/* <div className=" flex-1 text-left text-white text-4xl">{correctNumber ? correctNumber + "/" + attemptNumber : ""}</div> */}
+          <div className=" flex-1 text-left text-white text-4xl">
+            {correctNumber + "/" + attemptNumber}
           </div>
         </div>
         <div className={`flex flex-wrap gap-4 justify-center`}>
@@ -134,6 +147,9 @@ function App() {
                 selected={selected}
                 setSelected={setSelected}
                 handleCorrect={handleCorrect}
+                setAttemptNumber={setAttemptNumber}
+                questionAttempted={questionAttempted}
+                setQuestionAttempted={setQuestionAttempted}
               />
             );
           })}
