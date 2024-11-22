@@ -1,13 +1,19 @@
 import { Navbar } from "./UI/Navbar";
 import LetterRecognition from "./LetterRecognition";
-import { useState } from "react";
+import Timer from "./Timer";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
-  const [page, setPage] = useState("Letter Recognition");
   return (
     <div className="bg-slate-700 font-comfortaa h-screen overflow-none">
-      <Navbar page={page} setPage={setPage} />
-      {page === "Letter Recognition" ? <LetterRecognition /> : <div />}
+      <Navbar />
+      <Routes>
+        <Route path="/letter-recognition" element={<LetterRecognition />} />
+        <Route path="/timer" element={<Timer />} />
+        <Route path="*" element={<Navigate to="/letter-recognition" replace />} />
+
+      </Routes>
+
     </div>
   );
 }
