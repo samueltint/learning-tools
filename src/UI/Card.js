@@ -15,7 +15,6 @@ export const Card = ({
   };
 
   const handleClick = () => {
-    console.log(questionAttempted)
     if (!questionAttempted) {
       setQuestionAttempted(true)
       setAttemptNumber((prev) => prev + 1);

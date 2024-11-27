@@ -65,29 +65,23 @@ function LetterRecognition() {
     let newList = [];
     switch (selectedList) {
       case "alphabet":
-        console.log("alphabet");
         newList = [...alphabet];
         break;
       case "numbers":
-        console.log("numbers");
         newList = [...numbers];
         break;
       default:
-        console.log("list default");
         break;
     }
 
     switch (amount) {
       case "5":
-        console.log("5");
         newList = randomiseList(newList).slice(0, 5);
         break;
       case "10":
-        console.log("10");
         newList = randomiseList(newList).slice(0, 10);
         break;
       default:
-        console.log("amount default");
         break;
     }
 
