@@ -25,7 +25,7 @@ function Timer() {
     setStarted(true);
 
     const time = new Date();
-    time.setSeconds(time.getSeconds() + timerArray[timerIndex]);
+    time.setMinutes(time.getMinutes() + timerArray[timerIndex]);
     restart(time);
   };
 
@@ -42,7 +42,7 @@ function Timer() {
         handleReset();
       } else {
         const time = new Date();
-        time.setSeconds(time.getSeconds() + timerData[timerIndex + 1]);
+        time.setMinutes(time.getMinutes() + timerData[timerIndex + 1]);
         restart(time);
         setTimerIndex((index) => index + 1);
       }
