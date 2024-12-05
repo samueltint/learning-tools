@@ -1,4 +1,8 @@
-import { CircularProgress } from "@mui/material";
+import {
+  CircularProgress,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import { useState } from "react";
 import { useTimer } from "react-timer-hook";
 import timer from "./Sounds/timer.wav";
@@ -11,6 +15,8 @@ function Timer() {
   const [started, setStarted] = useState(false);
   const [timerData, setTimerData] = useState();
   const [timerIndex, setTimerIndex] = useState(0);
+  const [message, setMessage] = useState("");
+  const [unit, setUnit] = useState("Minutes");
 
   let alarm = new Audio(timer);
 
@@ -18,14 +24,22 @@ function Timer() {
     const timerArray = [];
     let i = 0;
     while (i < repetitions) {
-      timerArray.push(workingTime, breakTime);
+      timerArray.push({ time: workingTime, message: "Working Time" });
+      if (i < repetitions - 1) {
+        timerArray.push({ time: breakTime, message: "Break Time" });
+      }
       i++;
     }
     setTimerData(timerArray);
     setStarted(true);
 
     const time = new Date();
-    time.setMinutes(time.getMinutes() + timerArray[timerIndex]);
+    if (unit === "Seconds") {
+      time.setSeconds(time.getSeconds() + timerArray[timerIndex].time);
+    } else {
+      time.setMinutes(time.getMinutes() + timerArray[timerIndex].time);
+    }
+    setMessage(timerArray[timerIndex].message);
     restart(time);
   };
 
@@ -39,18 +53,31 @@ function Timer() {
     if (started) {
       alarm.play();
       if (timerIndex + 1 >= timerData.length) {
-        handleReset();
+        setMessage("All Done!");
       } else {
         const time = new Date();
-        time.setMinutes(time.getMinutes() + timerData[timerIndex + 1]);
+        if (unit === "Seconds") {
+          time.setSeconds(time.getSeconds() + timerData[timerIndex + 1].time);
+        } else {
+          time.setMinutes(time.getMinutes() + timerData[timerIndex + 1].time);
+        }
+        setMessage(timerData[timerIndex + 1].message);
         restart(time);
         setTimerIndex((index) => index + 1);
       }
     }
   };
 
-  const { totalSeconds, seconds, minutes, isRunning, pause, resume, restart } =
-    useTimer({ expiryTimestamp: new Date(), onExpire: handleExpire });
+  const {
+    totalSeconds,
+    totalMinutes,
+    seconds,
+    minutes,
+    isRunning,
+    pause,
+    resume,
+    restart,
+  } = useTimer({ expiryTimestamp: new Date(), onExpire: handleExpire });
 
   return (
     <div className="flex-1 flex flex-col items-center">
@@ -69,7 +96,14 @@ function Timer() {
             <CircularProgress
               variant="determinate"
               size={200}
-              value={100 - (totalSeconds / (workingTime * 60)) * 100}
+              value={
+                100 -
+                (totalSeconds /
+                  (unit === "Seconds"
+                    ? timerData[timerIndex].time
+                    : timerData[timerIndex].time * 60)) *
+                  100
+              }
             />
             <div className="absolute text-white text-5xl">
               <span>{minutes < 10 ? "0" + minutes : minutes}</span>:
@@ -99,9 +133,21 @@ function Timer() {
               <TimerReset className="stroke-white w-full h-full p-4" />
             </div>
           </div>
+          <div className="text-center text-white text-4xl p-3">{message}</div>
         </div>
       ) : (
         <div className="text-right text-white grid grid-cols-2 items-center w-fit gap-4 p-8">
+          <select
+            onChange={(e) => setUnit(e.target.value)}
+            value={unit}
+            className={
+              "py-2 px-3 w-36 mx-auto rounded-lg border-none bg-slate-800 text-base text-white col-span-2"
+            }
+          >
+            <option value="Seconds">Seconds</option>
+            <option value="Minutes">Minutes</option>
+          </select>
+
           <label>Working Time: </label>
           <input
             className="py-2 px-3 rounded-lg border-none bg-slate-800 text-base text-white w-24"
