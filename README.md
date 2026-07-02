@@ -1,5 +1,9 @@
 # Learning Tools
 
+This is a previous version that is no longer being updated. 
+
+The repository for the updated version, written in Typescript and utilising Material UI, is available [here](https://github.com/samueltint/learning-tools-V2).
+
 This is a set of tools designed to be used for early childhood education, and is currently being using by a Disability Support service in NSW. 
 
 The website is currently running [here](https://flash-cards-kappa-sooty.vercel.app/letter-recognition)
